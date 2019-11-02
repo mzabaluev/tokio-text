@@ -15,20 +15,18 @@ pub struct ChunkedBytes {
 }
 
 impl Default for ChunkedBytes {
+    #[inline]
     fn default() -> Self {
-        ChunkedBytes {
-            staging: BytesMut::new(),
-            chunks: VecDeque::new(),
-            chunk_size: DEFAULT_CHUNK_SIZE,
-        }
+        ChunkedBytes::with_chunk_size(DEFAULT_CHUNK_SIZE)
     }
 }
 
 impl ChunkedBytes {
     pub fn with_chunk_size(chunk_size: usize) -> Self {
         ChunkedBytes {
+            staging: BytesMut::with_capacity(chunk_size),
+            chunks: VecDeque::new(),
             chunk_size,
-            ..Default::default()
         }
     }
 
